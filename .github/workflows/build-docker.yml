@@ -1,0 +1,29 @@
+
+on: push
+  
+name: build docker image
+  
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        cs_client_key: ${{ secrets.cs_client_key }}
+        cs_secret_key: ${{ secrets.cs_secret_key }}
+        
+      run: |
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to ECS.
+        docker build -t test:latest .
+        docker save  test -o test.tar
+        chmod +x docker-uploader
+        ./docker-uploader --file="test.tar"
+        echo "build success"
