@@ -15,7 +15,7 @@ jobs:
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
-        cs_client_key: ${{ secrets.cs_client_key }},
+        cs_client_key: ${{ secrets.cs_client_key }}
         cs_secret_key: ${{ secrets.cs_secret_key }}
         
       run: |
